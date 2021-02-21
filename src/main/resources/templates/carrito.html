@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" 	
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>Carrito</title>
+<meta content="" name="descriptison">
+<meta content="" name="keywords">
+
+<!-- Favicons -->
+<!-- Favicons -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}" />
+<link th:href="@{/img/favicon.png}" rel="icon">
+<link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+	rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link rel="stylesheet"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/vendor/icofont/icofont.min.css}">
+<link rel="stylesheet"
+	th:href="@{/vendor/boxicons/css/boxicons.min.css}">
+<link rel="stylesheet" th:href="@{/vendor/venobox/venobox.css}">
+<link rel="stylesheet" th:href="@{/vendor/animate.css/animate.min.css}">
+<link rel="stylesheet" th:href="@{/vendor/remixicon/remixicon.css}">
+<link rel="stylesheet"
+	th:href="@{/vendor/owl.carousel/assets/owl.carousel.min.css}">
+<link rel="stylesheet"
+	th:href="@{/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css}">
+
+<!-- Template Main CSS File -->
+<link rel="stylesheet" th:href="@{/css/style.css}">
+
+<!-- =======================================================
+  * Template Name: Medilab - v2.0.0
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+	<!-- ======= Top Bar ======= -->
+	<div th:replace="inicio::topbar" id="topbar"
+		class="d-none d-lg-flex align-items-center fixed-top"></div>
+
+	<!-- ======= Header ======= -->
+	<header th:replace="inicio::header" id="header" class="fixed-top">
+
+	</header>
+	<!-- End Header -->
+
+	<!-- ===== form ====-->
+
+	<section id="formulario" class="formulario">
+		<div class="container-fluid">
+			<main id="main">
+				<div class="pb-5">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+
+								<!-- Shopping cart table -->
+								<div th:if="${medicamentos == null}">
+									<p class="font-italic mb-4">No hay nada en el carrito.</p>
+								</div>
+								<div class="table-responsive" th:if="${items != null}">
+									<p class="font-italic mb-4" th:if="${items.isEmpty()}">No hay nada en el carrito.</p>
+									<table class="table" th:if="!${items.isEmpty()}">
+										<thead>
+											<tr>
+												<th scope="col" class="border-0 bg-light">
+													<div class="p-2 px-3 text-uppercase">Nombre</div>
+												</th>
+												<th scope="col" class="border-0 bg-light">
+													<div class="py-2 text-uppercase">Precio</div>
+												</th>
+												<!-- <th scope="col" class="border-0 bg-light">
+													<div class="py-2 text-uppercase">Cantidad</div>
+												</th> -->
+												<th scope="col" class="border-0 bg-light">
+													<div class="py-2 text-uppercase">Quitar</div>
+												</th>
+											</tr>
+										</thead>
+										<tbody th:each="item:${items}">
+											<tr>
+												<th scope="row" class="border-0">
+													<div class="p-2">
+														<h5 class="mb-0" th:text="${item.medicamento.nombre}"></h5>
+													</div>
+												</th>
+												<td class="border-0 align-middle"><strong><span th:text="${item.medicamento.precio} + €"></span></strong></td>
+												<!-- <td class="border-0 align-middle"><strong><span th:text="${medicamento.stock}"></span></strong></td> -->
+												<td class="border-0 align-middle">
+													<a th:href="@{removeFromCart/?idMedicamento=__${item.medicamento.idMedicamento}__}" class="text-dark"><i class='bx bxs-trash-alt' ></i></a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- End -->
+							</div>
+						</div>
+						<div th:if="${items != null}">
+						<div class="row py-5 p-4 bg-white rounded shadow-sm" th:if="!${items.isEmpty()}">
+							<div class="col-lg-6">
+								<div
+									class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Resumen del pedido</div>
+								<div class="p-4">
+									<p class="font-italic mb-4">Las tasas de envío y otros costes adicionales
+										se calculan basándose en los artículos que hayas depositado en el carrito.</p>
+									<ul class="list-unstyled mb-4">
+										<li class="d-flex justify-content-between py-3 border-bottom"><strong
+											class="text-muted">Subtotal </strong><strong><span th:text="${precio} + €"></span></strong></li>
+										<li class="d-flex justify-content-between py-3 border-bottom"><strong
+											class="text-muted">Tasas de envío</strong><strong>00.00€</strong></li>
+										<li class="d-flex justify-content-between py-3 border-bottom"><strong
+											class="text-muted">Tasas adicionales</strong><strong>0.00€</strong></li>
+										<li class="d-flex justify-content-between py-3 border-bottom"><strong
+											class="text-muted">Total</strong>
+											<h5 class="font-weight-bold"><span th:text="${precio} + €"></span></h5></li>
+									</ul>
+									<a th:href="@{/carrito/factura/pdf}" class="btn btn-dark rounded-pill py-2 btn-block">Proceder al pago</a>
+								</div>
+							</div>
+						</div>
+						</div>
+						
+					</div>
+				</div>
+			</main>
+			<!-- End #main -->
+		</div>
+	</section>
+
+	<!-- ======= Footer ======= -->
+	<footer th:replace="inicio::footer" id="footer">
+
+		<div class="footer-top">
+			<div class="container">
+				<div class="row">
+
+					<div class="col-lg-3 col-md-6 footer-contact">
+						<h3>Medilab</h3>
+						<p>
+							A108 Adam Street <br> New York, NY 535022<br> United
+							States <br>
+							<br> <strong>Phone:</strong> +1 5589 55488 55<br> <strong>Email:</strong>
+							info@example.com<br>
+						</p>
+					</div>
+
+					<div class="col-lg-2 col-md-6 footer-links">
+						<h4>Useful Links</h4>
+						<ul>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">About
+									us</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Terms
+									of service</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Privacy
+									policy</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-3 col-md-6 footer-links">
+						<h4>Our Services</h4>
+						<ul>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Web
+									Design</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Web
+									Development</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Product
+									Management</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+							<li><i class="bx bx-chevron-right"></i> <a href="#">Graphic
+									Design</a></li>
+						</ul>
+					</div>
+
+					<div class="col-lg-4 col-md-6 footer-newsletter">
+						<h4>Join Our Newsletter</h4>
+						<p>Tamen quem nulla quae legam multos aute sint culpa legam
+							noster magna</p>
+						<form action="" method="post">
+							<input type="email" name="email"><input type="submit"
+								value="Subscribe">
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="container d-md-flex py-4">
+
+			<div class="mr-md-auto text-center text-md-left">
+				<div class="copyright">
+					&copy; Copyright <strong><span>Medilab</span></strong>. All Rights
+					Reserved
+				</div>
+				<div class="credits">
+					<!-- All the links in the footer should remain intact. -->
+					<!-- You can delete the links only if you purchased the pro version. -->
+					<!-- Licensing information: https://bootstrapmade.com/license/ -->
+					<!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+					Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+				</div>
+			</div>
+			<div class="social-links text-center text-md-right pt-3 pt-md-0">
+				<a href="#" class="twitter"><i class="bx bxl-twitter"></i></a> <a
+					href="#" class="facebook"><i class="bx bxl-facebook"></i></a> <a
+					href="#" class="instagram"><i class="bx bxl-instagram"></i></a> <a
+					href="#" class="google-plus"><i class="bx bxl-skype"></i></a> <a
+					href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+			</div>
+		</div>
+	</footer>
+	<!-- End Footer -->
+
+	<div id="preloader"></div>
+	<a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script th:hsrc="@{/vendor/jquery.easing/jquery.easing.min.js}"></script>
+	<script th:src="@{/vendor/php-email-form/validate.js}"></script>
+	<script th:src="@{/vendor/venobox/venobox.min.js}"></script>
+	<script th:src="@{/vendor/waypoints/jquery.waypoints.min.js}"></script>
+	<script th:src="@{/vendor/counterup/counterup.min.js}"></script>
+	<script th:src="@{/vendor/owl.carousel/owl.carousel.min.js}"></script>
+	<script
+		th:src="@{/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js}"></script>
+
+	<!-- Template Main JS File -->
+	<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>
